@@ -2,7 +2,7 @@
 #
 # kdrill - Anki plugin to tag cards according to KDrill usefile
 #
-# Copyright (c) 2010  Frédéric Brière <fbriere@fbriere.net>
+# Copyright (c) 2012  Frédéric Brière <fbriere@fbriere.net>
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -31,7 +31,4 @@ class KDrillHelp(QDialog, Ui_KDrillHelp):
     def __init__(self):
         QDialog.__init__(self, mw)
         self.setupUi(self)
-
-    def showHelp(self):
-        self.tabWidget.setCurrentIndex(0)
 
