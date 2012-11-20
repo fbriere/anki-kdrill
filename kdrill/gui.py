@@ -42,6 +42,9 @@ def onMenuEntry():
         mw.deck.setUndoEnd(undo)
         mw.deck.finishProgress()
 
+        # FIXME: Is this all we need to do?
+        mw.deck.refreshSession()
+
 def init():
     """Hook this plugin into Anki."""
     action = QAction(mw)
