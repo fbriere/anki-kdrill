@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# kdrill - Anki plugin to tag cards according to KDrill usefile
+# kdrill - Anki plugin to tag kanji cards listed in KDrill usefile
 #
 # Copyright (c) 2012  Frédéric Brière <fbriere@fbriere.net>
 #
@@ -32,9 +32,9 @@ def onMenuEntry():
     dialog = KDrillDialog()
     if dialog.exec_():
         mw.deck.startProgress()
-        mw.deck.updateProgress(_("Tagging cards"))
+        mw.deck.updateProgress(_("Tagging kanji cards"))
 
-        undo = _("Tag cards from KDrill usefile")
+        undo = _("Tag kanji cards listed in KDrill usefile")
         mw.deck.setUndoStart(undo)
 
         with open(dialog.usefilename) as usefile:
@@ -52,7 +52,7 @@ def onMenuEntry():
 def init():
     """Hook this plugin into Anki."""
     action = QAction(mw)
-    action.setText(_("Tag cards from KDrill usefile"))
+    action.setText(_("Tag kanji cards listed in KDrill usefile"))
 
     mw.mainWin.menuTools.addAction(action)
     mw.connect(action, SIGNAL("triggered()"), onMenuEntry)
