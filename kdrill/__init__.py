@@ -22,5 +22,5 @@ from ankiqt import mw
 from kdrill.main import init
 
 # (What is the id paramter for?)
-mw.registerPlugin("KDrill usefile", 0)
+mw.registerPlugin("KDrill", 0)
 mw.addHook("init", init)
