@@ -25,7 +25,7 @@ from sqlalchemy.orm import subqueryload
 from kdrill.usefile import parse_usefile
 
 
-def processDeck(deck, usefile, model, field):
+def processDeck(deck, model, field, usefile):
     """Tag the facts in a deck matching the kanji set."""
     kanji_set = parse_usefile(usefile)
 
@@ -34,11 +34,7 @@ def processDeck(deck, usefile, model, field):
             filter(Fact.modelId == model.id).\
             all()
 
-    tag = []
+    ids = [f.id for f in facts if f[field.name] in kanji_set]
 
-    for fact in facts:
-        if fact[field.name] in kanji_set:
-            tag.append(fact.id)
-
-    deck.addTags(tag, "KDrill")
+    deck.addTags(ids, "KDrill")
 

@@ -38,7 +38,10 @@ def onMenuEntry():
         mw.deck.setUndoStart(undo)
 
         with open(dialog.usefile) as usefile:
-            processDeck(mw.deck, usefile, dialog.model, dialog.field)
+            processDeck(deck=mw.deck,
+                        usefile=usefile,
+                        model=dialog.model,
+                        field=dialog.field)
 
         mw.deck.setUndoEnd(undo)
         mw.deck.finishProgress()
