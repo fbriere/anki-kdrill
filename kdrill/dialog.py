@@ -56,7 +56,7 @@ class KDrillDialog(QDialog, Ui_KDrillDialog):
         self.helpDialog = KDrillHelp()
 
     def updateFieldCombo(self):
-        """Refresh the field combo box based on a given model."""
+        """Refresh the field combo box based on the selected model."""
         self.fieldCombo.clear()
         for field in self.model.fieldModels:
             self.fieldCombo.addItem(field.name, QVariant(field))
@@ -88,15 +88,13 @@ class KDrillDialog(QDialog, Ui_KDrillDialog):
         """Callback for when the 'Help' button is clicked."""
         self.helpDialog.exec_()
 
-    def accept(self):
-        """Callback for when the Ok button is clicked."""
-        self.usefile = self.usefileLine.text()
-        self.field = self.fieldCombo.itemData(self.fieldCombo.currentIndex()).\
+
+    @property
+    def usefilename(self):
+        return self.usefileLine.text()
+
+    @property
+    def field(self):
+        return self.fieldCombo.itemData(self.fieldCombo.currentIndex()).\
                 toPyObject()
-
-        QDialog.accept(self)
-
-    def reject(self):
-        """Callback for when the Cancel button is clicked."""
-        QDialog.reject(self)
 

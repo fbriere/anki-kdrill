@@ -37,7 +37,7 @@ def onMenuEntry():
         undo = _("Tag cards from KDrill usefile")
         mw.deck.setUndoStart(undo)
 
-        with open(dialog.usefile) as usefile:
+        with open(dialog.usefilename) as usefile:
             processDeck(deck=mw.deck,
                         usefile=usefile,
                         model=dialog.model,
