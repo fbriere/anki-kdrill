@@ -38,11 +38,10 @@ def splitCards(deck, cards, field_name, values):
     not_found = []
 
     for card in cards:
-        if deck.cardIsNew(card):
-            if card.fact[field_name] in values:
-                found.append(card.id)
-            else:
-                not_found.append(card.id)
+        if card.fact[field_name] in values:
+            found.append(card.id)
+        else:
+            not_found.append(card.id)
 
     return found, not_found
 
