@@ -18,28 +18,26 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from anki.cards import Card
-from anki.models import CardModel
+from anki.facts import Fact
 
 from kdrill.usefile import parse_usefile
 
 
 def processDeck(deck, usefile_name, model, field):
-    """Tag the cards in a deck matching the kanji set."""
+    """Tag the facts in a deck matching the kanji set."""
     usefile = open(usefile_name)
     kanji_set = parse_usefile(usefile)
     usefile.close()
 
-    cards = deck.s.query(Card).\
-            join(Card.cardModel).\
-            filter(CardModel.modelId == model.id).\
+    facts = deck.s.query(Fact).\
+            filter(Fact.modelId == model.id).\
             all()
 
     tag = []
 
-    for card in cards:
-        if card.fact[field.name] in kanji_set:
-            tag.append(card.id)
+    for fact in facts:
+        if fact[field.name] in kanji_set:
+            tag.append(fact.id)
 
     deck.addTags(tag, "KDrill")
 
