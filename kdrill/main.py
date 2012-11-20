@@ -20,6 +20,8 @@
 
 from anki.facts import Fact
 
+from sqlalchemy.orm import subqueryload
+
 from kdrill.usefile import parse_usefile
 
 
@@ -28,6 +30,7 @@ def processDeck(deck, usefile, model, field):
     kanji_set = parse_usefile(usefile)
 
     facts = deck.s.query(Fact).\
+            options(subqueryload(Fact.fields)).\
             filter(Fact.modelId == model.id).\
             all()
 
