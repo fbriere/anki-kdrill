@@ -3,7 +3,7 @@
  <class>KDrillDialog</class>
  <widget class="QDialog" name="KDrillDialog">
   <property name="windowTitle">
-   <string>Apply KDrill usefile</string>
+   <string>Tag cards from KDrill usefile</string>
   </property>
   <property name="modal">
    <bool>true</bool>
