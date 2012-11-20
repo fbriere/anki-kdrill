@@ -37,7 +37,7 @@ def onMenuEntry():
         undo = _("Tag cards from KDrill usefile")
         mw.deck.setUndoStart(undo)
 
-        processDeck(mw.deck, dialog.usefile, dialog.field, dialog.cardModels)
+        processDeck(mw.deck, dialog.usefile, dialog.model, dialog.field)
 
         mw.deck.setUndoEnd(undo)
         mw.deck.finishProgress()

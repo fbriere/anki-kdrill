@@ -19,23 +19,21 @@
 
 
 from anki.cards import Card
-from anki.facts import Fact, Field
-
-from sqlalchemy.orm import eagerload_all
+from anki.models import CardModel
 
 from kdrill.usefile import parse_usefile
 
 
-def processDeck(deck, usefile_name, field, templates):
+def processDeck(deck, usefile_name, model, field):
     """Tag the cards in a deck matching the kanji set."""
     usefile = open(usefile_name)
     kanji_set = parse_usefile(usefile)
     usefile.close()
 
-    templates_id = map(lambda t: t.id, templates)
     cards = deck.s.query(Card).\
-            options(eagerload_all(Card.fact, Fact.fields, Field.fieldModel)).\
-            filter(Card.cardModelId.in_(templates_id)).all()
+            join(Card.cardModel).\
+            filter(CardModel.modelId == model.id).\
+            all()
 
     tag = []
 

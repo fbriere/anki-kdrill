@@ -2,7 +2,7 @@
 #
 # kdrill - Anki plugin to tag cards according to KDrill usefile
 #
-# Copyright (c) 2010  Frédéric Brière <fbriere@fbriere.net>
+# Copyright (c) 2012  Frédéric Brière <fbriere@fbriere.net>
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -18,8 +18,6 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import os.path
-
 from ankiqt import mw, ui
 
 from PyQt4.QtCore import *
@@ -28,33 +26,47 @@ from PyQt4.QtGui import *
 from kdrill.ui_dialog import Ui_KDrillDialog
 from kdrill.help import KDrillHelp
 
+from operator import attrgetter
+import os.path
+
 
 class KDrillDialog(QDialog, Ui_KDrillDialog):
-    """'Apply KDrill usefile' dialog window."""
+    """Main dialog window."""
 
     def __init__(self):
         QDialog.__init__(self, mw)
         self.setupUi(self)
 
-        # Add this missing widget
-        self.modelChooser = ui.modelchooser.ModelChooser(self, mw, mw.deck,
-                                                         self.modelChanged)
-        self.modelWidget.setLayout(self.modelChooser)
+        # Keep a copy of the list of models
+        self._models = sorted(mw.deck.models, key=attrgetter("name"))
 
-        self.enableOk(0)
+        # TODO: We could try and guess what the default model should be
+        self.model = self._models[0]
+
+        self.modelCombo.addItems(QStringList([m.name for m in self._models]))
+        self.updateFieldCombo()
+
+        self.setOkEnabled(False)
 
         usefile = os.path.expanduser("~/.kanjiusefile")
         if os.path.exists(usefile):
             self.usefileLine.setText(usefile)
-            self.enableOk()
-
-        self.modelChanged(mw.deck.currentModel)
+            self.setOkEnabled(True)
 
         self.helpDialog = KDrillHelp()
 
-    def enableOk(self, enabled=1):
+    def updateFieldCombo(self):
+        """Refresh the field combo box based on a given model."""
+        self.fieldCombo.clear()
+        for field in self.model.fieldModels:
+            self.fieldCombo.addItem(field.name, QVariant(field))
+            if field.name == "Kanji":
+                self.fieldCombo.setCurrentIndex(self.fieldCombo.count() - 1)
+
+    def setOkEnabled(self, enabled):
         """Enable the Ok button once a usefile has been selected."""
         self.buttonBox.button(QDialogButtonBox.Ok).setEnabled(enabled)
+
 
     @pyqtSignature("")
     def on_usefileButton_clicked(self):
@@ -63,36 +75,28 @@ class KDrillDialog(QDialog, Ui_KDrillDialog):
                                                self.usefileLine.text())
         if filename != "":
             self.usefileLine.setText(filename)
-            self.enableOk()
+            self.setOkEnabled(True)
 
-    def modelChanged(self, model):
-        """Callback for when the model selection has changed."""
-        self.fieldCombo.clear()
-        for field in model.fieldModels:
-            self.fieldCombo.addItem(field.name, QVariant(field))
-            if field.name == "Kanji":
-                self.fieldCombo.setCurrentIndex(self.fieldCombo.count() - 1)
+    @pyqtSignature("int")
+    def on_modelCombo_activated(self, index):
+        """Callback for when the model selection changes."""
+        self.model = self._models[index]
+        self.updateFieldCombo()
 
     @pyqtSignature("")
     def on_buttonBox_helpRequested(self):
         """Callback for when the 'Help' button is clicked."""
-        self.helpDialog.showHelp()
         self.helpDialog.exec_()
 
     def accept(self):
         """Callback for when the Ok button is clicked."""
         self.usefile = self.usefileLine.text()
-        self.model = mw.deck.currentModel
         self.field = self.fieldCombo.itemData(self.fieldCombo.currentIndex()).\
                 toPyObject()
-        self.cardModels = [ c for c in mw.deck.currentModel.cardModels
-                           if c.active ]
 
-        self.modelChooser.deinit()
         QDialog.accept(self)
 
     def reject(self):
         """Callback for when the Cancel button is clicked."""
-        self.modelChooser.deinit()
         QDialog.reject(self)
 
