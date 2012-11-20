@@ -20,12 +20,7 @@
 
 import os.path
 
-from ankiqt import mw
-
-from PyQt4 import QtCore, QtGui
-
 from kdrill.deck import splitDeck
-from kdrill.dialog import KDrillDialog
 from kdrill.usefile import parse_usefile
 
 
@@ -38,26 +33,4 @@ def processDeck(deck, usefile_name, field, templates):
     tag, untag = splitDeck(deck, field, kanji_set, templates)
 
     deck.addTags(tag, "KDrill")
-
-def onApplyClicked():
-    """Callback for the 'Apply KDrill usefile' menu entry."""
-    dialog = KDrillDialog()
-    if dialog.exec_():
-        mw.deck.startProgress()
-        mw.deck.updateProgress(_("Applying KDrill usefile"))
-        undo = _("Apply KDrill usefile")
-        mw.deck.setUndoStart(undo)
-
-        processDeck(mw.deck, dialog.usefile, dialog.field, dialog.cardModels)
-
-        mw.deck.setUndoEnd(undo)
-        mw.deck.finishProgress()
-
-def init():
-    """Hook this plugin into Anki."""
-    action = QtGui.QAction(mw)
-    action.setText(_("Apply KDrill usefile"))
-
-    mw.mainWin.menuTools.addAction(action)
-    mw.connect(action, QtCore.SIGNAL("triggered()"), onApplyClicked)
 

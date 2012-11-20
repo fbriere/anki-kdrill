@@ -19,7 +19,7 @@
 
 
 from ankiqt import mw
-from kdrill.main import init
+from kdrill.gui import init
 
 # (What is the id paramter for?)
 mw.registerPlugin("KDrill", 0)
