@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# kdrill - Anki plugin to (un)suspend cards according to KDrill usefile
+# kdrill - Anki plugin to tag cards according to KDrill usefile
 #
 # Copyright (c) 2010  Frédéric Brière <fbriere@fbriere.net>
 #

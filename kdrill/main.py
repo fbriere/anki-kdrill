@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# kdrill - Anki plugin to (un)suspend cards according to KDrill usefile
+# kdrill - Anki plugin to tag cards according to KDrill usefile
 #
 # Copyright (c) 2010  Frédéric Brière <fbriere@fbriere.net>
 #
@@ -30,17 +30,14 @@ from kdrill.usefile import parse_usefile
 
 
 def processDeck(deck, usefile_name, field, templates):
-    """Suspend the cards in a deck not matching the kanji set, and unsuspend
-    those that do.
-    """
+    """Tag the cards in a deck matching the kanji set."""
     usefile = open(usefile_name)
     kanji_set = parse_usefile(usefile)
     usefile.close()
 
-    unsuspend, suspend = splitDeck(deck, field, kanji_set, templates)
+    tag, untag = splitDeck(deck, field, kanji_set, templates)
 
-    deck.suspendCards(suspend)
-    deck.unsuspendCards(unsuspend)
+    deck.addTags(tag, "KDrill")
 
 def onApplyClicked():
     """Callback for the 'Apply KDrill usefile' menu entry."""
