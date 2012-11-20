@@ -23,11 +23,9 @@ from anki.facts import Fact
 from kdrill.usefile import parse_usefile
 
 
-def processDeck(deck, usefile_name, model, field):
+def processDeck(deck, usefile, model, field):
     """Tag the facts in a deck matching the kanji set."""
-    usefile = open(usefile_name)
     kanji_set = parse_usefile(usefile)
-    usefile.close()
 
     facts = deck.s.query(Fact).\
             filter(Fact.modelId == model.id).\
