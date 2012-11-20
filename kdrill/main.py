@@ -26,42 +26,22 @@ from sqlalchemy.orm import eagerload_all
 from kdrill.usefile import parse_usefile
 
 
-def getCards(deck, templates_id):
-    """Fetch all cards beloning to some templates."""
-    return deck.s.query(Card).\
-            options(eagerload_all(Card.fact, Fact.fields, Field.fieldModel)).\
-            filter(Card.cardModelId.in_(templates_id)).all()
-
-def splitCards(deck, cards, field_name, values):
-    """Split a set of cards in two: those matching the values set, and those
-    that don't.
-    """
-    found = []
-    not_found = []
-
-    for card in cards:
-        if card.fact[field_name] in values:
-            found.append(card.id)
-        else:
-            not_found.append(card.id)
-
-    return found, not_found
-
-def splitDeck(deck, field, values, templates):
-    """Split a deck in two: cards matching the values set, and those that
-    don't.
-    """
-    templates_id = map(lambda t: t.id, templates)
-    cards = getCards(deck, templates_id)
-    return splitCards(deck, cards, field.name, values)
-
 def processDeck(deck, usefile_name, field, templates):
     """Tag the cards in a deck matching the kanji set."""
     usefile = open(usefile_name)
     kanji_set = parse_usefile(usefile)
     usefile.close()
 
-    tag, untag = splitDeck(deck, field, kanji_set, templates)
+    templates_id = map(lambda t: t.id, templates)
+    cards = deck.s.query(Card).\
+            options(eagerload_all(Card.fact, Fact.fields, Field.fieldModel)).\
+            filter(Card.cardModelId.in_(templates_id)).all()
+
+    tag = []
+
+    for card in cards:
+        if card.fact[field.name] in kanji_set:
+            tag.append(card.id)
 
     deck.addTags(tag, "KDrill")
 
