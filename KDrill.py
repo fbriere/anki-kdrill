@@ -1,2 +1,3 @@
-# Dummy file to make Anki load this plugin
-import kdrill
+from kdrill.gui import init
+
+init()
