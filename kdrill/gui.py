@@ -53,6 +53,6 @@ def init():
     """Hook this plugin into Anki."""
     action = QAction(_("Tag kanji cards listed in KDrill usefile"), mw)
 
-    mw.mainWin.menuTools.addAction(action)
     mw.connect(action, SIGNAL("triggered()"), onMenuEntry)
+    mw.mainWin.menuTools.addAction(action)
 
