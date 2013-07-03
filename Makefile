@@ -1,7 +1,21 @@
 #!/usr/bin/make -f
 
-.DEFAULT_GOAL := all
+NAME = KDrill
+SUBDIR = kdrill
 
-%:
-	$(MAKE) -C kdrill $@
+ZIP = zip
+ZIPFILE = $(NAME).zip
+
+
+$(ZIPFILE): all
+	$(ZIP) $(ZIPFILE) $(NAME).py $(SUBDIR)/*.py
+
+zip: $(ZIPFILE)
+
+all clean:
+	$(MAKE) -C $(SUBDIR) $@
+
+
+.PHONY: all clean zip
+.DEFAULT_GOAL := all
 
