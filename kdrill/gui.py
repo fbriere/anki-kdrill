@@ -20,6 +20,7 @@
 
 from aqt import mw
 from aqt.qt import *
+import aqt.utils
 
 from kdrill.dialog import KDrillDialog
 from kdrill.main import tag_notes
@@ -35,12 +36,16 @@ def onMenuEntry():
         mw.checkpoint(_("Tag kanji cards listed in KDrill usefile"))
 
         with open(dialog.usefilename) as usefile:
-            tag_notes(mw.col, dialog.field, usefile)
+            tagged, kanji = tag_notes(mw.col, dialog.field, usefile)
 
         mw.progress.finish()
 
         # FIXME: Do we need to do something?
         #mw.deck.refreshSession()
+
+        aqt.utils.showInfo("Tagged %u notes (based on %u kanji)." % (
+            len(tagged),
+            len(kanji)))
 
 def init():
     """Hook this plugin into Anki."""

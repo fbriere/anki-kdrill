@@ -23,7 +23,8 @@ from kdrill.usefile import parse_usefile
 
 
 def tag_notes(col, field, usefile):
-    """Tag all notes matching the kanji set."""
+    """Tag all notes matching the kanji set from the usefile.  Returns a tuple
+    of two elements: the list of tagged notes ID, and the set of kanji."""
     kanji_set = parse_usefile(usefile)
 
     notes = get_notes_field(col, field)
@@ -31,4 +32,6 @@ def tag_notes(col, field, usefile):
     ids = [id for id, field in notes if field in kanji_set]
 
     col.tags.bulkAdd(ids, "KDrill")
+
+    return ids, kanji_set
 
