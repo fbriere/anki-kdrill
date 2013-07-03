@@ -18,13 +18,13 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+import anki.find
 from aqt import mw
 from aqt.qt import *
 
 from kdrill.ui_dialog import Ui_KDrillDialog
 from kdrill.help import KDrillHelp
 
-from operator import itemgetter
 import os.path
 
 
@@ -35,14 +35,10 @@ class KDrillDialog(QDialog, Ui_KDrillDialog):
         QDialog.__init__(self, mw)
         self.setupUi(self)
 
-        # Keep a copy of the list of models
-        self._models = sorted(mw.col.models.all(), key=itemgetter("name"))
-
-        # TODO: We could try and guess what the default model should be
-        self.model = self._models[0]
-
-        self.modelCombo.addItems([m['name'] for m in self._models])
-        self.updateFieldCombo()
+        for field in sorted(anki.find.fieldNames(mw.col, downcase=False)):
+            self.fieldCombo.addItem(field, field)
+            if field == "Kanji":
+                self.fieldCombo.setCurrentIndex(self.fieldCombo.count() - 1)
 
         self.setOkEnabled(False)
 
@@ -52,14 +48,6 @@ class KDrillDialog(QDialog, Ui_KDrillDialog):
             self.setOkEnabled(True)
 
         self.helpDialog = KDrillHelp()
-
-    def updateFieldCombo(self):
-        """Refresh the field combo box based on the selected model."""
-        self.fieldCombo.clear()
-        for field in mw.col.models.fieldNames(self.model):
-            self.fieldCombo.addItem(field, field)
-            if field == "Kanji":
-                self.fieldCombo.setCurrentIndex(self.fieldCombo.count() - 1)
 
     def setOkEnabled(self, enabled):
         """Enable the Ok button once a usefile has been selected."""
@@ -74,12 +62,6 @@ class KDrillDialog(QDialog, Ui_KDrillDialog):
         if filename != "":
             self.usefileLine.setText(filename)
             self.setOkEnabled(True)
-
-    @pyqtSignature("int")
-    def on_modelCombo_activated(self, index):
-        """Callback for when the model selection changes."""
-        self.model = self._models[index]
-        self.updateFieldCombo()
 
     @pyqtSignature("")
     def on_buttonBox_helpRequested(self):

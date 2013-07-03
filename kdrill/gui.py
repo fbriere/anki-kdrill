@@ -37,7 +37,6 @@ def onMenuEntry():
         with open(dialog.usefilename) as usefile:
             processDeck(col=mw.col,
                         usefile=usefile,
-                        model=dialog.model,
                         field=dialog.field)
 
         mw.progress.finish()

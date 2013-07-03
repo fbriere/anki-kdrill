@@ -18,16 +18,17 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+from kdrill.find import get_notes_field
 from kdrill.usefile import parse_usefile
 
 
-def processDeck(col, model, field, usefile):
+def processDeck(col, field, usefile):
     """Tag all notes matching the kanji set."""
     kanji_set = parse_usefile(usefile)
 
-    notes = [col.getNote(n) for n in col.findNotes('note:"%s"' % model['name'])]
+    notes = get_notes_field(col, field)
 
-    ids = [n.id for n in notes if n[field] in kanji_set]
+    ids = [id for id, field in notes if field in kanji_set]
 
     col.tags.bulkAdd(ids, "KDrill")
 
