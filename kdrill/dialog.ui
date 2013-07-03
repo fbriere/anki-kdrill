@@ -53,13 +53,13 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="deckBox">
+    <widget class="QGroupBox" name="kanjiBox">
      <property name="title">
       <string>Kanji cards</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <layout class="QHBoxLayout" name="modelLayout">
         <item>
          <widget class="QLabel" name="modelLabel">
           <property name="text">
@@ -89,7 +89,7 @@ p, li { white-space: pre-wrap; }
            </font>
           </property>
           <property name="toolTip">
-           <string>Field that contains the kanji for each fact</string>
+           <string>Field that contains the kanji for each note</string>
           </property>
           <property name="text">
            <string>Field:</string>

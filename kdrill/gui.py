@@ -18,7 +18,7 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from ankiqt import mw, ui
+from aqt import mw
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -31,28 +31,26 @@ def onMenuEntry():
     """Callback for our menu entry."""
     dialog = KDrillDialog()
     if dialog.exec_():
-        mw.deck.startProgress()
-        mw.deck.updateProgress(_("Tagging kanji cards"))
+        mw.progress.start(immediate=True)
+        mw.progress.update(_("Tagging kanji cards"))
 
-        undo = _("Tag kanji cards listed in KDrill usefile")
-        mw.deck.setUndoStart(undo)
+        mw.checkpoint(_("Tag kanji cards listed in KDrill usefile"))
 
         with open(dialog.usefilename) as usefile:
-            processDeck(deck=mw.deck,
+            processDeck(col=mw.col,
                         usefile=usefile,
                         model=dialog.model,
                         field=dialog.field)
 
-        mw.deck.setUndoEnd(undo)
-        mw.deck.finishProgress()
+        mw.progress.finish()
 
-        # FIXME: Is this all we need to do?
-        mw.deck.refreshSession()
+        # FIXME: Do we need to do something?
+        #mw.deck.refreshSession()
 
 def init():
     """Hook this plugin into Anki."""
     action = QAction(_("Tag kanji cards listed in KDrill usefile"), mw)
 
     mw.connect(action, SIGNAL("triggered()"), onMenuEntry)
-    mw.mainWin.menuTools.addAction(action)
+    mw.form.menuTools.addAction(action)
 

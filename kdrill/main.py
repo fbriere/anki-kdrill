@@ -18,23 +18,16 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from anki.facts import Fact
-
-from sqlalchemy.orm import subqueryload
-
 from kdrill.usefile import parse_usefile
 
 
-def processDeck(deck, model, field, usefile):
-    """Tag the facts in a deck matching the kanji set."""
+def processDeck(col, model, field, usefile):
+    """Tag all notes matching the kanji set."""
     kanji_set = parse_usefile(usefile)
 
-    facts = deck.s.query(Fact).\
-            options(subqueryload(Fact.fields)).\
-            filter(Fact.modelId == model.id).\
-            all()
+    notes = [col.getNote(n) for n in col.findNotes('note:"%s"' % model['name'])]
 
-    ids = [f.id for f in facts if f[field.name] in kanji_set]
+    ids = [n.id for n in notes if n[field] in kanji_set]
 
-    deck.addTags(ids, "KDrill")
+    col.tags.bulkAdd(ids, "KDrill")
 

@@ -18,7 +18,7 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from ankiqt import mw, ui
+from aqt import mw
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -26,7 +26,7 @@ from PyQt4.QtGui import *
 from kdrill.ui_dialog import Ui_KDrillDialog
 from kdrill.help import KDrillHelp
 
-from operator import attrgetter
+from operator import itemgetter
 import os.path
 
 
@@ -38,12 +38,12 @@ class KDrillDialog(QDialog, Ui_KDrillDialog):
         self.setupUi(self)
 
         # Keep a copy of the list of models
-        self._models = sorted(mw.deck.models, key=attrgetter("name"))
+        self._models = sorted(mw.col.models.all(), key=itemgetter("name"))
 
         # TODO: We could try and guess what the default model should be
         self.model = self._models[0]
 
-        self.modelCombo.addItems(QStringList([m.name for m in self._models]))
+        self.modelCombo.addItems([m['name'] for m in self._models])
         self.updateFieldCombo()
 
         self.setOkEnabled(False)
@@ -58,9 +58,9 @@ class KDrillDialog(QDialog, Ui_KDrillDialog):
     def updateFieldCombo(self):
         """Refresh the field combo box based on the selected model."""
         self.fieldCombo.clear()
-        for field in self.model.fieldModels:
-            self.fieldCombo.addItem(field.name, QVariant(field))
-            if field.name == "Kanji":
+        for field in mw.col.models.fieldNames(self.model):
+            self.fieldCombo.addItem(field, field)
+            if field == "Kanji":
                 self.fieldCombo.setCurrentIndex(self.fieldCombo.count() - 1)
 
     def setOkEnabled(self, enabled):
@@ -95,6 +95,5 @@ class KDrillDialog(QDialog, Ui_KDrillDialog):
 
     @property
     def field(self):
-        return self.fieldCombo.itemData(self.fieldCombo.currentIndex()).\
-                toPyObject()
+        return self.fieldCombo.itemData(self.fieldCombo.currentIndex())
 
