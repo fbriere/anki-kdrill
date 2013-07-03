@@ -22,7 +22,7 @@ from kdrill.find import get_notes_field
 from kdrill.usefile import parse_usefile
 
 
-def processDeck(col, field, usefile):
+def tag_notes(col, field, usefile):
     """Tag all notes matching the kanji set."""
     kanji_set = parse_usefile(usefile)
 

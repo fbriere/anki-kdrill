@@ -22,7 +22,7 @@ from aqt import mw
 from aqt.qt import *
 
 from kdrill.dialog import KDrillDialog
-from kdrill.main import processDeck
+from kdrill.main import tag_notes
 
 
 def onMenuEntry():
@@ -35,9 +35,7 @@ def onMenuEntry():
         mw.checkpoint(_("Tag kanji cards listed in KDrill usefile"))
 
         with open(dialog.usefilename) as usefile:
-            processDeck(col=mw.col,
-                        usefile=usefile,
-                        field=dialog.field)
+            tag_notes(mw.col, dialog.field, usefile)
 
         mw.progress.finish()
 
