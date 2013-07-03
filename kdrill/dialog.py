@@ -19,9 +19,7 @@
 
 
 from aqt import mw
-
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from aqt.qt import *
 
 from kdrill.ui_dialog import Ui_KDrillDialog
 from kdrill.help import KDrillHelp
