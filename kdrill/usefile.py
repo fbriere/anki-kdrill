@@ -2,7 +2,7 @@
 #
 # kdrill - Anki plugin to tag kanji cards listed in KDrill usefile
 #
-# Copyright (c) 2010  Frédéric Brière <fbriere@fbriere.net>
+# Copyright (c) 2010-2013  Frédéric Brière <fbriere@fbriere.net>
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
