@@ -31,13 +31,15 @@ import os.path
 class KDrillDialog(QDialog, Ui_KDrillDialog):
     """Main dialog window."""
 
+    DEFAULT_FIELD = "Kanji"
+
     def __init__(self):
         QDialog.__init__(self, mw)
         self.setupUi(self)
 
         for field in sorted(anki.find.fieldNames(mw.col, downcase=False)):
             self.fieldCombo.addItem(field, field)
-            if field == "Kanji":
+            if field == self.DEFAULT_FIELD:
                 self.fieldCombo.setCurrentIndex(self.fieldCombo.count() - 1)
 
         self.setOkEnabled(False)
