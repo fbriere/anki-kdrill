@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# kdrill - Anki plugin to tag kanji cards listed in KDrill usefile
+# kdrill - Anki add-on to tag kanji cards listed in KDrill usefile
 #
 # Copyright (c) 2010-2013  Frédéric Brière <fbriere@fbriere.net>
 #

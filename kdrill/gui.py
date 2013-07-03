@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# kdrill - Anki plugin to tag kanji cards listed in KDrill usefile
+# kdrill - Anki add-on to tag kanji cards listed in KDrill usefile
 #
 # Copyright (c) 2012-2013  Frédéric Brière <fbriere@fbriere.net>
 #
@@ -48,7 +48,7 @@ def onMenuEntry():
             len(kanji)))
 
 def init():
-    """Hook this plugin into Anki."""
+    """Hook this add-on into Anki."""
     action = QAction(_("Tag kanji cards listed in KDrill usefile"), mw)
 
     mw.connect(action, SIGNAL("triggered()"), onMenuEntry)
