@@ -18,9 +18,6 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from ankiqt import mw
 from kdrill.gui import init
 
-# (What is the id paramter for?)
-mw.registerPlugin("KDrill", 0)
-mw.addHook("init", init)
+init()
