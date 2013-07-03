@@ -51,8 +51,7 @@ def onMenuEntry():
 
 def init():
     """Hook this plugin into Anki."""
-    action = QAction(mw)
-    action.setText(_("Tag kanji cards listed in KDrill usefile"))
+    action = QAction(_("Tag kanji cards listed in KDrill usefile"), mw)
 
     mw.mainWin.menuTools.addAction(action)
     mw.connect(action, SIGNAL("triggered()"), onMenuEntry)
