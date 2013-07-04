@@ -22,6 +22,7 @@ from ankiqt import mw
 
 from PyQt4.QtGui import QDialog
 
+import kdrill
 from kdrill.ui_help import Ui_KDrillHelp
 
 
@@ -32,3 +33,5 @@ class KDrillHelp(QDialog, Ui_KDrillHelp):
         QDialog.__init__(self, mw)
         self.setupUi(self)
 
+        self.aboutLabel.setText(self.aboutLabel.text() %
+                                {'version': kdrill.__version__})
