@@ -21,6 +21,7 @@
 from aqt import mw
 from aqt.qt import *
 
+import kdrill
 from kdrill.ui_help import Ui_KDrillHelp
 
 
@@ -31,3 +32,5 @@ class KDrillHelp(QDialog, Ui_KDrillHelp):
         QDialog.__init__(self, mw)
         self.setupUi(self)
 
+        self.aboutLabel.setText(self.aboutLabel.text() %
+                                {'version': kdrill.__version__})
